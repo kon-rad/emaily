@@ -1,24 +1,37 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import Payments from './Payments';
 
 class Header extends Component {
   renderContent() {
     switch (this.props.auth) {
       case null:
-        return 'Still deciding';
+        return;
       case false:
-        return '<a href="/auth/google"><li>Login With Google</li></a>';
+        return <a href="/auth/google"><li>Login With Google</li></a>;
       default:
-        return '<a href="/logout"><li>Logout</li></a>';
+        return [
+            <li key="1"><Payments /></li>,
+            <li key="3" style={{ margin: '0 10px' }}>
+              Credits: {this.props.auth.credits}
+            </li>,
+            <li key="2"><a href="/api/logout">Logout</a></li>
+          ]
     }
   }
+
   render() {
-    console.log(this.props);
 
     return (
       <nav>
         <div className="nav-wrapper">
-          <a href="/" className="left brand-logo">Emaily</a>
+          <Link
+            to={this.props.auth ? '/surveys' : '/'}
+            className="left brand-logo"
+          >
+            Emaily
+          </Link>
           <ul className="right">
             {this.renderContent()}
           </ul>
@@ -28,8 +41,8 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return { auth: state.auth };
+function mapStateToProps({ auth }) {
+  return { auth };
 }
 
 export default connect(mapStateToProps)(Header);
