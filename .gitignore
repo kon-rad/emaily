@@ -2,4 +2,7 @@
 node_modules
 .DS_Store
 config/dev.js
+code-notes.js
+
+
 
